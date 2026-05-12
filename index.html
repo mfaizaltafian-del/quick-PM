@@ -10,10 +10,10 @@
 </head>
 <body>
  
-<!-- Sidebar overlay (mobile) -->
+<!-- mobile test -->
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
  
-<!-- Sidebar -->
+<!-- sidebar -->
 <aside class="sidebar" id="sidebar">
   <div class="logo">
     <div class="logo-text">mini PM</div>
@@ -33,7 +33,7 @@
   </nav>
 </aside>
  
-<!-- Mobile topbar -->
+<!-- mobile topbar test -->
 <div class="mobile-topbar">
   <div class="mobile-logo">MyPM</div>
   <button class="burger" onclick="toggleSidebar()" aria-label="Menu">
@@ -44,12 +44,12 @@
 <!-- Main -->
 <main class="main">
  
-  <!-- DASHBOARD -->
+  <!-- home or dashboard -->
   <div class="page active" id="page-dashboard">
     <div class="page-header">
       <div>
-        <div class="page-title">Dashboard</div>
-        <div class="page-subtitle">Your project overview at a glance</div>
+        <div class="page-title">Home</div>
+        <div class="page-subtitle">Quick Project Overview</div>
       </div>
     </div>
     <div class="stats-row" id="stats-row"></div>
@@ -64,7 +64,7 @@
     <div class="page-header">
       <div>
         <div class="page-title">Projects</div>
-        <div class="page-subtitle">All your projects in one place</div>
+        <div class="page-subtitle">All projects</div>
       </div>
       <button class="btn btn-primary" onclick="openProjectModal()">＋ New Project</button>
     </div>
@@ -76,7 +76,7 @@
     <div class="page-header">
       <div>
         <div class="page-title">Tasks</div>
-        <div class="page-subtitle">Stay on top of your to-dos</div>
+        <div class="page-subtitle">put your to-do</div>
       </div>
       <button class="btn btn-primary" onclick="openTaskModal()">＋ New Task</button>
     </div>
@@ -86,7 +86,7 @@
         <div id="tasks-todo"></div>
       </div>
       <div class="task-column">
-        <div class="task-col-title">In Progress <span class="task-count" id="inprog-count">0</span></div>
+        <div class="task-col-title">Ongoing <span class="task-count" id="inprog-count">0</span></div>
         <div id="tasks-inprog"></div>
       </div>
       <div class="task-column">
@@ -94,7 +94,7 @@
         <div id="tasks-done"></div>
       </div>
       <div class="task-column">
-        <div class="task-col-title">Blocked <span class="task-count" id="blocked-count">0</span></div>
+        <div class="task-col-title">Dropped <span class="task-count" id="blocked-count">0</span></div>
         <div id="tasks-blocked"></div>
       </div>
     </div>
@@ -185,7 +185,7 @@
         <label class="form-label">Status</label>
         <select class="form-select" id="task-status">
           <option value="todo">To Do</option>
-          <option value="inprog">In Progress</option>
+          <option value="inprog">Ongoing</option>
           <option value="done">Done</option>
           <option value="blocked">Blocked</option>
         </select>
