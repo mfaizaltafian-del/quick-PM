@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MyPM</title>
+<link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+
+</head>
+<body>
+ 
+<!-- Sidebar overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+ 
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="logo">
+    <div class="logo-text">mini PM</div>
+    <div class="logo-sub">Personal workspace</div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Menu</div>
+    <div class="nav-item active" onclick="showPage('dashboard'); closeSidebar()">
+      <span class="nav-icon">⬡</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="showPage('projects'); closeSidebar()">
+      <span class="nav-icon">◈</span> Projects
+    </div>
+    <div class="nav-item" onclick="showPage('tasks'); closeSidebar()">
+      <span class="nav-icon">◎</span> Tasks
+    </div>
+  </nav>
+</aside>
+ 
+<!-- Mobile topbar -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">MyPM</div>
+  <button class="burger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+ 
+<!-- Main -->
+<main class="main">
+ 
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Dashboard</div>
+        <div class="page-subtitle">Your project overview at a glance</div>
+      </div>
+    </div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="section-header">
+      <div class="section-title">Recent Projects</div>
+    </div>
+    <div class="projects-grid" id="dashboard-projects"></div>
+  </div>
+ 
+  <!-- PROJECTS -->
+  <div class="page" id="page-projects">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Projects</div>
+        <div class="page-subtitle">All your projects in one place</div>
+      </div>
+      <button class="btn btn-primary" onclick="openProjectModal()">＋ New Project</button>
+    </div>
+    <div class="projects-grid" id="projects-list"></div>
+  </div>
+ 
+  <!-- TASKS -->
+  <div class="page" id="page-tasks">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Tasks</div>
+        <div class="page-subtitle">Stay on top of your to-dos</div>
+      </div>
+      <button class="btn btn-primary" onclick="openTaskModal()">＋ New Task</button>
+    </div>
+    <div class="tasks-container">
+      <div class="task-column">
+        <div class="task-col-title">To Do <span class="task-count" id="todo-count">0</span></div>
+        <div id="tasks-todo"></div>
+      </div>
+      <div class="task-column">
+        <div class="task-col-title">In Progress <span class="task-count" id="inprog-count">0</span></div>
+        <div id="tasks-inprog"></div>
+      </div>
+      <div class="task-column">
+        <div class="task-col-title">Done <span class="task-count" id="done-count">0</span></div>
+        <div id="tasks-done"></div>
+      </div>
+      <div class="task-column">
+        <div class="task-col-title">Blocked <span class="task-count" id="blocked-count">0</span></div>
+        <div id="tasks-blocked"></div>
+      </div>
+    </div>
+  </div>
+ 
+</main>
+ 
+<!-- PROJECT MODAL -->
+<div class="modal-overlay" id="project-modal">
+  <div class="modal">
+    <div class="modal-title" id="proj-modal-title">New Project</div>
+    <div class="form-group">
+      <label class="form-label">Project Name</label>
+      <input class="form-input" id="proj-name" placeholder="e.g. Website Redesign" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea class="form-textarea" id="proj-desc" placeholder="What's this project about?"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="proj-status">
+          <option value="on-track">On Track</option>
+          <option value="delayed">Delayed</option>
+          <option value="critical">Critical</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Progress (%)</label>
+        <input class="form-input" type="range" id="proj-progress" min="0" max="100" value="0"
+          oninput="document.getElementById('proj-progress-val').textContent = this.value + '%'" />
+        <div style="font-size:12px; color:var(--muted2); margin-top:4px;" id="proj-progress-val">0%</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Total Budget (Rp)</label>
+        <input class="form-input" type="number" id="proj-budget" placeholder="e.g. 50000000" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Budget Used (Rp)</label>
+        <input class="form-input" type="number" id="proj-budget-used" placeholder="e.g. 20000000" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Owner</label>
+        <input class="form-input" id="proj-owner" placeholder="e.g. Andi" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Due Date</label>
+        <input class="form-input" type="date" id="proj-due" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeProjectModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- TASK MODAL -->
+<div class="modal-overlay" id="task-modal">
+  <div class="modal">
+    <div class="modal-title" id="task-modal-title">New Task</div>
+    <div class="form-group">
+      <label class="form-label">Task Title</label>
+      <input class="form-input" id="task-title" placeholder="e.g. Design mockup" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Project</label>
+        <select class="form-select" id="task-project"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Priority</label>
+        <select class="form-select" id="task-priority">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="task-status">
+          <option value="todo">To Do</option>
+          <option value="inprog">In Progress</option>
+          <option value="done">Done</option>
+          <option value="blocked">Blocked</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Due Date</label>
+        <input class="form-input" type="date" id="task-due" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeTaskModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTask()">Save Task</button>
+    </div>
+  </div>
+</div>
+ 
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
