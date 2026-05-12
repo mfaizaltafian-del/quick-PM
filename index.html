@@ -4,79 +4,110 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MyPM</title>
-<link rel="stylesheet" href="style.css" />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css" />
 
 </head>
 <body>
- 
-<!-- mobile test -->
+
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
- 
-<!-- sidebar -->
+
 <aside class="sidebar" id="sidebar">
   <div class="logo">
-    <div class="logo-text">mini PM</div>
+    <div class="logo-text">MyPM</div>
     <div class="logo-sub">Personal workspace</div>
   </div>
   <nav class="nav">
     <div class="nav-label">Menu</div>
-    <div class="nav-item active" onclick="showPage('dashboard'); closeSidebar()">
+    <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard'); closeSidebar()">
       <span class="nav-icon">⬡</span> Dashboard
     </div>
-    <div class="nav-item" onclick="showPage('projects'); closeSidebar()">
-      <span class="nav-icon">◈</span> Projects
+    <div class="nav-item" data-page="divisions" onclick="showPage('divisions'); closeSidebar()">
+      <span class="nav-icon">◈</span> Division
     </div>
-    <div class="nav-item" onclick="showPage('tasks'); closeSidebar()">
+    <div class="nav-item" data-page="projects" onclick="showPage('projects'); closeSidebar()">
+      <span class="nav-icon">◫</span> Projects
+    </div>
+    <div class="nav-item" data-page="tasks" onclick="showPage('tasks'); closeSidebar()">
       <span class="nav-icon">◎</span> Tasks
     </div>
   </nav>
+  <div class="sidebar-footer">
+    <div class="user-badge">
+      <div class="user-avatar">M</div>
+      <div>
+        <div class="user-name">Me</div>
+        <div class="user-role">Project Owner</div>
+      </div>
+    </div>
+  </div>
 </aside>
- 
-<!-- mobile topbar test -->
+
 <div class="mobile-topbar">
   <div class="mobile-logo">MyPM</div>
   <button class="burger" onclick="toggleSidebar()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </div>
- 
-<!-- Main -->
+
 <main class="main">
- 
-  <!-- home or dashboard -->
+
+  <!-- DASHBOARD -->
   <div class="page active" id="page-dashboard">
     <div class="page-header">
       <div>
-        <div class="page-title">Home</div>
-        <div class="page-subtitle">Quick Project Overview</div>
+        <div class="page-title">Dashboard</div>
+        <div class="page-subtitle">Your workspace at a glance</div>
       </div>
     </div>
+
+    <!-- 1. Task KPIs -->
     <div class="stats-row" id="stats-row"></div>
+
+    <!-- 2. Division Cards -->
+    <div class="section-header" style="margin-bottom:14px;">
+      <div class="section-title">Divisions</div>
+      <button class="btn btn-ghost btn-sm" onclick="showPage('divisions')">View All →</button>
+    </div>
+    <div class="divisions-row" id="dashboard-divisions" style="margin-bottom:32px;"></div>
+
+    <!-- 3. Recent Projects -->
     <div class="section-header">
       <div class="section-title">Recent Projects</div>
     </div>
     <div class="projects-grid" id="dashboard-projects"></div>
   </div>
- 
+
+  <!-- DIVISIONS -->
+  <div class="page" id="page-divisions">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Division</div>
+        <div class="page-subtitle">Overview of all divisions and their projects</div>
+      </div>
+    </div>
+    <div class="divisions-row" id="divisions-list"></div>
+  </div>
+
   <!-- PROJECTS -->
   <div class="page" id="page-projects">
     <div class="page-header">
       <div>
         <div class="page-title">Projects</div>
-        <div class="page-subtitle">All projects</div>
+        <div class="page-subtitle">All your projects in one place</div>
       </div>
       <button class="btn btn-primary" onclick="openProjectModal()">＋ New Project</button>
     </div>
     <div class="projects-grid" id="projects-list"></div>
   </div>
- 
+
   <!-- TASKS -->
   <div class="page" id="page-tasks">
     <div class="page-header">
       <div>
         <div class="page-title">Tasks</div>
-        <div class="page-subtitle">put your to-do</div>
+        <div class="page-subtitle">Stay on top of your to-dos</div>
       </div>
       <button class="btn btn-primary" onclick="openTaskModal()">＋ New Task</button>
     </div>
@@ -86,7 +117,7 @@
         <div id="tasks-todo"></div>
       </div>
       <div class="task-column">
-        <div class="task-col-title">Ongoing <span class="task-count" id="inprog-count">0</span></div>
+        <div class="task-col-title">In Progress <span class="task-count" id="inprog-count">0</span></div>
         <div id="tasks-inprog"></div>
       </div>
       <div class="task-column">
@@ -94,14 +125,43 @@
         <div id="tasks-done"></div>
       </div>
       <div class="task-column">
-        <div class="task-col-title">Dropped <span class="task-count" id="blocked-count">0</span></div>
+        <div class="task-col-title">Blocked <span class="task-count" id="blocked-count">0</span></div>
         <div id="tasks-blocked"></div>
       </div>
     </div>
   </div>
- 
+
 </main>
- 
+
+<!-- DIVISION DETAIL OVERLAY -->
+<div class="div-detail-overlay" id="div-detail-overlay">
+  <div class="div-detail-panel" id="div-detail-panel" style="--div-color: var(--accent)">
+    <div class="div-detail-header">
+      <div>
+        <div class="div-detail-title" id="div-detail-title">Division Name</div>
+        <div class="div-detail-sub" id="div-detail-sub"></div>
+      </div>
+      <button class="close-btn" onclick="closeDivDetail()">✕</button>
+    </div>
+    <div class="div-detail-body">
+      <div class="div-detail-stats" id="div-detail-stats"></div>
+      <div class="progress-section" style="margin-bottom:20px;">
+        <div class="progress-top">
+          <span style="font-size:11px;color:var(--muted)">Overall Progress</span>
+          <span style="font-size:11px;color:var(--muted)" id="div-detail-pct">0%</span>
+        </div>
+        <div class="progress-bar" style="height:7px;">
+          <div class="progress-fill" id="div-detail-bar" style="width:0%; background: var(--div-color, var(--accent));"></div>
+        </div>
+      </div>
+      <div class="section-header">
+        <div class="section-title">Projects in this division</div>
+      </div>
+      <div class="projects-grid" id="div-detail-projects"></div>
+    </div>
+  </div>
+</div>
+
 <!-- PROJECT MODAL -->
 <div class="modal-overlay" id="project-modal">
   <div class="modal">
@@ -125,21 +185,19 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">Progress (%)</label>
-        <input class="form-input" type="range" id="proj-progress" min="0" max="100" value="0"
-          oninput="document.getElementById('proj-progress-val').textContent = this.value + '%'" />
-        <div style="font-size:12px; color:var(--muted2); margin-top:4px;" id="proj-progress-val">0%</div>
+        <label class="form-label">Division</label>
+        <select class="form-select" id="proj-division">
+          <option value="">— No Division —</option>
+          <option value="rd">Research &amp; Development</option>
+          <option value="sales">Sales Division</option>
+        </select>
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Total Budget (Rp)</label>
-        <input class="form-input" type="number" id="proj-budget" placeholder="e.g. 50000000" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Budget Used (Rp)</label>
-        <input class="form-input" type="number" id="proj-budget-used" placeholder="e.g. 20000000" />
-      </div>
+    <div class="form-group">
+      <label class="form-label">Progress (%)</label>
+      <input class="form-input" type="range" id="proj-progress" min="0" max="100" value="0"
+        oninput="document.getElementById('proj-progress-val').textContent = this.value + '%'" />
+      <div style="font-size:12px; color:var(--muted2); margin-top:4px;" id="proj-progress-val">0%</div>
     </div>
     <div class="form-row">
       <div class="form-group">
@@ -157,7 +215,7 @@
     </div>
   </div>
 </div>
- 
+
 <!-- TASK MODAL -->
 <div class="modal-overlay" id="task-modal">
   <div class="modal">
@@ -185,7 +243,7 @@
         <label class="form-label">Status</label>
         <select class="form-select" id="task-status">
           <option value="todo">To Do</option>
-          <option value="inprog">Ongoing</option>
+          <option value="inprog">In Progress</option>
           <option value="done">Done</option>
           <option value="blocked">Blocked</option>
         </select>
@@ -201,7 +259,7 @@
     </div>
   </div>
 </div>
- 
+
 <div class="toast" id="toast"></div>
 <script src="script.js"></script>
 </body>
